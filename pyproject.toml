@@ -1,0 +1,16 @@
+[project]
+name = "recarga-celular"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "curl-cffi>=0.14.0",
+]
+
+[dependency-groups]
+dev = [
+    "dotenv>=0.9.9",
+    "pillow>=12.1.0",
+    "qrcode>=8.2",
+]
