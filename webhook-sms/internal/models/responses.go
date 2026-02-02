@@ -2,6 +2,7 @@ package models
 
 import "encoding/json"
 
+// CloudEvent é o formato padrão que o HTTPSMS usa para enviar dados.Todos os webhooks vêm nesse formato (CloudEvents spec)
 type CloudEvent struct {
 	ID              string          `json:"id"`              // ID único do evento
 	Source          string          `json:"source"`          // De onde veio (ex: httpsms.com)
@@ -12,8 +13,9 @@ type CloudEvent struct {
 	Data            json.RawMessage `json:"data"`            // Os dados reais do evento (varia por tipo)
 }
 
+// MessageData é a estrutura dos dados quando uma mensagem é recebida/enviada. Isso fica dentro do campo "Data" do CloudEvent
 type MessageData struct {
-	ID        string `json:"id"`         // ID da mensagem
+	ID        string `json:"message_id"` // ID da mensagem
 	Owner     string `json:"owner"`      // Dono do telefone
 	Contact   string `json:"contact"`    // Número de quem enviou/recebeu
 	Content   string `json:"content"`    // Texto da mensagem

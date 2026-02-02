@@ -2,7 +2,9 @@ import logging
 import sys
 from pathlib import Path
 
-if not (Path("/.dockerenv").exists() or Path("/run/.containerenv").exists()):
+is_docker = Path("/.dockerenv").exists() or Path("/run/.containerenv").exists()
+
+if not is_docker:
     from dotenv import load_dotenv
 
     load_dotenv()

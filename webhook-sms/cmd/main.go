@@ -2,8 +2,8 @@ package main
 
 import (
 	"httpsms-webhook/internal/api"
-	"httpsms-webhook/internal/utils"
-	"log"
+	"httpsms-webhook/internal/logger"
+	"httpsms-webhook/internal/services"
 	"os"
 	"strings"
 
@@ -11,27 +11,32 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var signingKey string
+func main() {
+	logger.Init()
 
-func init() {
 	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found")
+		logger.Log.Info("No .env file found")
 	}
-	signingKey = os.Getenv("SIGNING_KEY")
+
+	signingKey := os.Getenv("SIGNING_KEY")
 	signingKey = strings.Trim(signingKey, "' \t\n\r")
 	if signingKey == "" {
-		panic("SIGNING_KEY environment variable is required")
+		logger.Fatal("SIGNING_KEY environment variable is required")
 	}
-}
 
-func main() {
+	if err := services.InitRedis("redis:6379", ""); err != nil {
+		logger.Fatalf("❌ Erro ao conectar no Redis: %v", err)
+	}
+
+	logger.Log.Info("✅ Redis conectado")
+
 	//gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	router.GET("/health", api.Health)
-	router.POST("/webhook", utils.ValidateJWT(signingKey), api.WebhookHandler)
+	router.POST("/webhook", api.ValidateJWT(signingKey), api.WebhookHandler)
 
 	if err := router.Run(":8080"); err != nil {
-		log.Fatal("❌ Erro ao iniciar servidor:", err)
+		logger.Fatal("❌ Erro ao iniciar servidor", "error", err, "port", 8080)
 	}
 }
