@@ -15,5 +15,6 @@ docker run --rm \
   --env-file "$ENV_FILE" \
   "$IMAGE"
 
+
 echo "[$(date)] Scraper finalizado!"
 docker image prune -f
