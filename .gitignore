@@ -12,7 +12,6 @@ wheels/
 #envs
 .env
 
-@temporarios
 cookies_session.json
 pix_qrcode.png
 detalhes.txt
