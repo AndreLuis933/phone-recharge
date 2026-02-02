@@ -5,11 +5,11 @@ RUN apk add --no-cache git ca-certificates tzdata
 
 WORKDIR /build
 
-COPY go.mod go.sum ./
+COPY webhook-sms/go.mod webhook-sms/go.sum ./
 RUN go mod download && go mod verify
 
-COPY cmd/ ./cmd/
-COPY internal/ ./internal/
+COPY webhook-sms/cmd/ ./cmd/
+COPY webhook-sms/internal/ ./internal/
 
 # Build completamente estático
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \

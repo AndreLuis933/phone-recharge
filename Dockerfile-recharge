@@ -21,9 +21,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
   --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
   uv sync --locked --no-install-project ;
 
-COPY pyproject.toml /app/pyproject.toml
-COPY uv.lock /app/uv.lock
-COPY ./src /app/src
+COPY recharge/pyproject.toml /app/pyproject.toml
+COPY recharge/uv.lock /app/uv.lock
+COPY recharge/src /app/src
 
 RUN --mount=type=cache,target=/root/.cache/uv \
   uv sync --locked ;

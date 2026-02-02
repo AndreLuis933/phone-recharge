@@ -29,10 +29,10 @@ jobs:
       matrix:
         include:
           - service: recharge
-            dockerfile: ./recharge/Dockerfile
+            dockerfile: ./Dockerfile-recharge
             target: production
           - service: webhook-sms
-            dockerfile: ./webhook-sms/Dockerfile
+            dockerfile: ./Dockerfile-webhook-sms
             target: 'production'
 
     steps:
