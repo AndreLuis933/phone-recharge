@@ -1,20 +1,26 @@
 #!/bin/bash
 set -e
 
-IMAGE="ghcr.io/andreluis933/webhook-sms:latest"
+IMAGE="ghcr.io/andreluis933/phone-recharge-webhook-sms:latest"
 CONTAINER_NAME="webhook-sms"
-ENV_FILE="/projects/webhook-sms/.env"
+ENV_FILE="/projects/phone-recharge/webhook-sms/.env"
 
 echo "[$(date)] Atualizando imagem..."
 docker pull "$IMAGE"
 
-echo "[$(date)] Iniciando scraper..."
-docker run --rm \
+echo "[$(date)] Parando container antigo se existir..."
+docker stop "$CONTAINER_NAME" 2>/dev/null || true
+docker rm "$CONTAINER_NAME" 2>/dev/null || true
+
+echo "[$(date)] Iniciando webhook-sms..."
+docker run -d \
   --name "$CONTAINER_NAME" \
+  --restart unless-stopped \
   --network redis-network \
   --env-file "$ENV_FILE" \
   "$IMAGE"
 
-
-echo "[$(date)] Scraper finalizado!"
+echo "[$(date)] Limpando imagens não utilizadas..."
 docker image prune -f
+
+echo "[$(date)] Deploy concluído!"

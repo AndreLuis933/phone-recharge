@@ -34,7 +34,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/health", api.Health)
-	router.POST("/webhook", api.ValidateJWT(signingKey), api.WebhookHandler)
+	router.POST("/webhook/sms", api.ValidateJWT(signingKey), api.WebhookHandler)
 
 	if err := router.Run(":8080"); err != nil {
 		logger.Fatal("❌ Erro ao iniciar servidor", "error", err, "port", 8080)
