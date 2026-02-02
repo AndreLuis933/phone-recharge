@@ -17,13 +17,13 @@ RUN uv python install 3.12 ;
 WORKDIR /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
-  --mount=type=bind,source=uv.lock,target=uv.lock \
-  --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+  --mount=type=bind,source=recharge/uv.lock,target=uv.lock \
+  --mount=type=bind,source=recharge/pyproject.toml,target=pyproject.toml \
   uv sync --locked --no-install-project ;
 
-COPY recharge/pyproject.toml /app/pyproject.toml
-COPY recharge/uv.lock /app/uv.lock
-COPY recharge/src /app/src
+COPY ./recharge/pyproject.toml /app/pyproject.toml
+COPY ./recharge/uv.lock /app/uv.lock
+COPY ./recharge/src /app/src
 
 RUN --mount=type=cache,target=/root/.cache/uv \
   uv sync --locked ;
