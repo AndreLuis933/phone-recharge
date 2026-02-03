@@ -47,4 +47,6 @@ WORKDIR /app
 
 USER gouser
 
+EXPOSE 8080
+
 CMD ["/app/webhook-service"]

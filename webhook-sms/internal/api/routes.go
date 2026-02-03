@@ -28,14 +28,15 @@ func WebhookHandler(c *gin.Context) {
 			return
 		}
 
-		// Agora você tem acesso direto aos campos
-		logger.Log.Info("Processando mensagem",
-			"de", msgData.Contact,
-			"conteudo", msgData.Content,
-			"id", msgData.ID,
-		)
-		if msgData.Contact == "321"{
+
+		if msgData.Contact == "321" {
 			services.ProcessVivoSMS(msgData)
+		} else {
+			logger.Log.Info("Mensagem que nao é do numero 321",
+				"de", msgData.Contact,
+				"conteudo", msgData.Content,
+				"id", msgData.ID,
+			)
 		}
 
 	case EventHeartbeatOffline, EventHeartbeatOnline:

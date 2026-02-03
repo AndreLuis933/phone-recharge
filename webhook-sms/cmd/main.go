@@ -31,7 +31,14 @@ func main() {
 	logger.Log.Info("✅ Redis conectado")
 
 	gin.SetMode(gin.ReleaseMode)
-	router := gin.Default()
+	router := gin.New()
+
+	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{
+		SkipPaths: []string{"/health"},
+	}))
+
+	router.Use(gin.Recovery())
+
 	router.SetTrustedProxies([]string{
 		"10.11.12.0/24",
 	})
