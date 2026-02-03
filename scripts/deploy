@@ -1,32 +1,10 @@
 #!/bin/bash
 set -e
 
-IMAGE="ghcr.io/andreluis933/phone-recharge-webhook-sms:latest"
-CONTAINER_NAME="webhook-sms"
-ENV_FILE="/projects/phone-recharge/webhook-sms/.env"
+echo "[$(date)] Iniciando Deploy"
 
-echo "[$(date)] Atualizando imagem..."
-docker pull "$IMAGE"
-
-echo "[$(date)] Parando container antigo se existir..."
-docker stop "$CONTAINER_NAME" 2>/dev/null || true
-docker rm "$CONTAINER_NAME" 2>/dev/null || true
-
-echo "[$(date)] Iniciando webhook-sms..."
-docker run -d \
-  --name "$CONTAINER_NAME" \
-  --restart unless-stopped \
-  --network redis-network \
-  --env-file "$ENV_FILE" \
-  --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1" \
-  --health-interval 30s \
-  --health-timeout 10s \
-  --health-retries 3 \
-  --health-start-period 15s \
-  "$IMAGE"
-
-echo "[$(date)] Limpando imagens não utilizadas..."
+docker compose pull --policy always
+docker compose up -d --remove-orphans
 docker image prune -f
-
 
 echo "[$(date)] Deploy concluído!"

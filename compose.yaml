@@ -1,42 +1,23 @@
 services:
-  redis:
-    image: redis:7-alpine
-    volumes:
-      - redis-data:/data
-    command: redis-server --appendonly yes
-    networks:
-      - redis-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-
   webhook-sms:
-    build: ./webhook-sms
-    ports:
-      - "8080:8080"
+    image: ghcr.io/andreluis933/phone-recharge-webhook-sms:latest
+    container_name: webhook-sms
+    restart: unless-stopped
     env_file:
-      - .env
-    depends_on:
-      redis:
-        condition: service_healthy
+      - /projects/phone-recharge/webhook-sms/.env
     networks:
       - redis-network
-
-  recharge:
-    build: ./recharge
-    env_file:
-      - .env
-    depends_on:
-      redis:
-        condition: service_healthy
-    networks:
-      - redis-network
-
-volumes:
-  redis-data:
+      - nginx_network
+    healthcheck:
+      test: ['CMD-SHELL', 'wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
 networks:
   redis-network:
-    driver: bridge
+    external: true
+  nginx_network:
+    external: true
+    name: setup-vps_nginx_network
