@@ -30,8 +30,11 @@ func main() {
 
 	logger.Log.Info("✅ Redis conectado")
 
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
+	router.SetTrustedProxies([]string{
+		"10.11.12.0/24",
+	})
 
 	router.HEAD("/health", api.Health)
 	router.GET("/health", api.Health)
