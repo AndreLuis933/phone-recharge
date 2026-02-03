@@ -33,6 +33,7 @@ func main() {
 	//gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
+	router.HEAD("/health", api.Health)
 	router.GET("/health", api.Health)
 	router.POST("/webhook/sms", api.ValidateJWT(signingKey), api.WebhookHandler)
 

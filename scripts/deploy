@@ -18,6 +18,11 @@ docker run -d \
   --restart unless-stopped \
   --network redis-network \
   --env-file "$ENV_FILE" \
+  --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1" \
+  --health-interval 30s \
+  --health-timeout 10s \
+  --health-retries 3 \
+  --health-start-period 15s \
   "$IMAGE"
 
 echo "[$(date)] Limpando imagens não utilizadas..."
