@@ -12,7 +12,7 @@ TIMEOUT_DEFALT = 10
 IMPERSONETE = "chrome120"
 
 MSISDN = os.environ["MSISDN"]
-AMOUNT_VALUE = os.environ["AMOUNT_VALUE"]
+AMOUNT_VALUE = int(os.environ["AMOUNT_VALUE"])
 PAYMENT_METHOD = os.environ["PAYMENT_METHOD"]
 
 SMS_URL = "https://recarga-api.vivo.com.br/sms-tokens"
