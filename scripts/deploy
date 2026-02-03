@@ -28,4 +28,5 @@ docker run -d \
 echo "[$(date)] Limpando imagens não utilizadas..."
 docker image prune -f
 
+
 echo "[$(date)] Deploy concluído!"
