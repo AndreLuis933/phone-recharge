@@ -11,6 +11,7 @@ wheels/
 
 #envs
 .env
+logs/*.log
 
 cookies_session.json
 pix_qrcode.png
